@@ -1,24 +1,28 @@
 def canUnlockAll(boxes):
-    # Create a set to keep track of the boxes that have been visited
-    visited = set()
+    if not boxes:
+        return False
     
-    # Add the first box to the visited set
+    visited = set()
+    queue = [0]  # Start from the first box
     visited.add(0)
     
-    # Create a stack to store the keys
-    stack = [0]
-    
-    # Iterate through the stack until it is empty
-    while stack:
-        # Pop the top box from the stack
-        box = stack.pop()
-        
-        # Iterate through the keys in the current box
-        for key in boxes[box]:
-            # If the key opens a new box and it hasn't been visited yet, add it to the stack and visited set
-            if key < len(boxes) and key not in visited:
-                stack.append(key)
+    while queue:
+        current_box = queue.pop(0)
+        for key in boxes[current_box]:
+            if key not in visited and key < len(boxes):
+                queue.append(key)
                 visited.add(key)
     
-    # If all boxes have been visited, return True. Otherwise, return False.
     return len(visited) == len(boxes)
+
+# Example usage
+if __name__ == "__main__":
+    boxes1 = [[1], [2], [3], [4], []]
+    print(canUnlockAll(boxes1))  # Output: True
+    
+    boxes2 = [[1, 4, 6], [2], [0, 4, 1], [5, 6, 2], [3], [4, 1], [6]]
+    print(canUnlockAll(boxes2))  # Output: True
+    
+    boxes3 = [[1, 4], [2], [0, 4, 1], [3], [], [4, 1], [5, 6]]
+    print(canUnlockAll(boxes3))  # Output: False
+
